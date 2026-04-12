@@ -7,7 +7,7 @@
 @section('contenido')
     <div class="md:flex md:justify-center md:gap-10 md:items-center">
         <div class="md:w-6/12 p-5">
-           <img src="{{ asset('img/login.jpg') }}" alt="Imagen registro de usuarios" class="rounded-lg">
+           <img src="{{ asset('img/registrar.jpg') }}" alt="Imagen registro de usuarios" class="rounded-lg">
         </div>
         <div class="md:w-4/12 bg-white p-6 rounded-lg shadow-xl">
             {{-- El atributo novalidate se utiliza para deshabilitar la validacion del navegador y permitir que laravel maneje la validacion de los campos del formulario --}}
@@ -19,7 +19,7 @@
                         Name
                     </labe>
                     <input
-                        for="name"
+                        id="name"
                         name="name"
                         type="text"
                         placeholder="Tu nombre"
@@ -37,7 +37,7 @@
                         Username
                     </labe>
                     <input
-                        for="username"
+                        id="username"
                         name="username"
                         type="text"
                         placeholder="Tu nombre de usuario"
@@ -55,7 +55,7 @@
                         Email
                     </labe>
                     <input
-                        for="email"
+                        id="email"
                         name="email"
                         type="email"
                         placeholder="Tu email de registro"
@@ -73,7 +73,7 @@
                         Password
                     </labe>
                     <input
-                        for="password"
+                        id="password"
                         name="password"
                         type="password"
                         placeholder="Password de registro"
@@ -91,7 +91,7 @@
                         Repetir Password
                     </labe>
                     <input
-                        for="password_confirmation"
+                        id="password_confirmation"
                         name="password_confirmation"
                         type="password"
                         placeholder="Repite tu password"

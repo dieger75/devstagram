@@ -17,8 +17,10 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
+    // Los datos que esperamos el usuario nos de al momento de registrarse, es decir, los datos que se pueden llenar masivamente
     protected $fillable = [
         'name',
+        'username',
         'email',
         'password',
     ];
