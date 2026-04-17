@@ -37,5 +37,6 @@ Route::get('/{user:username}', [PostController::class, 'index'])->name('post.ind
 
 // se usa /post/create por la convención de REST para indicar que se va a crear un nuevo recurso (post)
 Route::get('/posts/create', [PostController::class, 'create'])->name('posts.create');
+Route::post('/posts', [PostController::class, 'store'])->name('posts.store');
 
 Route::post('/imagenes', [ImagenController::class, 'store'])->name('imagenes.store');

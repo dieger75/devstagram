@@ -24,7 +24,7 @@ gracias a la directiva @stack('styles') que se encuentra en el head de la planti
             </form>
         </div>
         <div class="md:w-1/2 p-10 bg-white rounded-lg shadow-xl mt-10 md:mt-0">
-            <form action="{{ route('register') }}" method="POST" novalidate>
+            <form action="{{ route('posts.store') }}" method="POST" novalidate>
                 {{-- Directiva para proteger el formulario contra ataques de tipo CSRF (Cross-Site Request Forgery) --}}
                 @csrf
                 <div class="mb-5">
@@ -37,7 +37,7 @@ gracias a la directiva @stack('styles') que se encuentra en el head de la planti
                         type="text"
                         placeholder="Título de la Publicación"
                         class="border p-3 w-full rounded-lg @error('name') border-red-500 @enderror"
-                        value="{{ old('titulo')}}"
+                        value="{{ old('titulo')}}" {{-- Se utiliza old('titulo') para mantener el valor del campo en caso de que haya un error de validación y el formulario se vuelva a mostrar. --}}
                     />
                     @error('titulo')
                         <p class="bg-red-500 text-white my-2 rounded-lg text-sm p-2 text-center">
@@ -58,6 +58,20 @@ gracias a la directiva @stack('styles') que se encuentra en el head de la planti
                         class="border p-3 w-full rounded-lg @error('name') border-red-500 @enderror"
                     >{{ old('descripcion')}}</textarea>
                     @error('descripcion')
+                        <p class="bg-red-500 text-white my-2 rounded-lg text-sm p-2 text-center">
+                            {{ $message }}
+                        </p>
+                    @enderror
+                </div>
+
+                <div class="mb-5">
+                    {{-- Se utiliza un campo oculto para almacenar el nombre de la imagen que se ha subido a través de Dropzone. Este campo se llenará automáticamente con el nombre de la imagen una vez que se haya cargado exitosamente, gracias al código JavaScript que se encuentra en app.js. --}}
+                    <input
+                        name="imagen"
+                        type="hidden"
+                        value="{{ old('imagen') }}" {{-- Se utiliza old('imagen') para mantener el valor del campo en caso de que haya un error de validación y el formulario se vuelva a mostrar. --}}
+                    />
+                    @error('imagen')
                         <p class="bg-red-500 text-white my-2 rounded-lg text-sm p-2 text-center">
                             {{ $message }}
                         </p>
