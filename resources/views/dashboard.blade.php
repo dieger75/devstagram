@@ -41,7 +41,7 @@
             <div class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                 @foreach ($posts as $post)
                     <div class="mb-10">
-                        <a>
+                        <a href="{{ route('posts.show', ['post' => $post, 'user' => $user])}}"> {{-- se añade un enlace a cada imagen del post utilizando la función route() para generar la URL de la ruta posts.show, pasando el objeto $post como parámetro para mostrar la información del post específico en la vista dedicada para ese post. Por defecto si no se le pasa paningún parámetro, muestra el ID del post --}}
                             <img src="{{ asset('uploads') . '/' . $post->imagen }}" alt="Imagen del post {{ $post->titulo }}">
                         </a>
                     </div>

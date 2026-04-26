@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use Illuminate\Support\Facades\File;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -11,7 +12,10 @@ class PostController extends Controller
     public function __construct()
     {
         // el middleware('auth') se encarga de verificar si el usuario está autenticado, esto es necesario para proteger las rutas que requieren autenticación, en este caso, la ruta del muro donde se muestran los posts, ya que solo los usuarios autenticados pueden verlos
-        $this->middleware('auth');
+
+        // $this->middleware('auth');
+
+        $this->middleware('auth')->except(['show', 'index']); // se añade el método except() para indicar que la ruta "show" y "index" no requieren autenticación, lo que permitirá a cualquier usuario ver un post específico o el muro de posts sin necesidad de estar autenticado. Esto es útil para permitir que los usuarios compartan sus posts con otros usuarios o para mostrar posts públicos sin requerir autenticación.
     }
 
     /**
@@ -46,9 +50,9 @@ class PostController extends Controller
 
     }
 
-    public function create()
+    public function create() // se muestra el formulario de creación de post, simplemente se devuelve la vista posts.create que contiene el formulario para crear un nuevo post.
     {
-        return view('posts.create');
+        return view('posts.create'); //
     }
 
     // se recibe la información del formulario de creación de post, se valida y se guarda en la base de datos
@@ -98,4 +102,34 @@ class PostController extends Controller
 
         return redirect()->route('post.index', auth()->user()->username); // se redirige al usuario a su muro después de crear el post, pasando su nombre de usuario como parámetro para mostrar su información en la vista del dashboard
     }
+    public function show(User $user, Post $post)
+    {
+        return view('posts.show', [
+            'post' => $post,
+            'user' => $user
+        ]);
+    }
+    // se añade el método show() para mostrar un post específico, recibiendo como parámetros el usuario y el post, y pasando esa información a la vista posts.show para mostrar la información del post en una vista dedicada para ese post.
+
+    public function destroy(Post $post)
+    {
+        // dd('Eliminando', $post->id);
+
+        $this->authorize('delete', $post); // se utiliza el método authorize() para verificar si el usuario tiene permiso para eliminar el post, pasando como argumento la acción 'delete' y el post que se intenta eliminar. Esto es útil para proteger la ruta de eliminación de posts y asegurarse de que solo los usuarios autorizados puedan eliminar un post específico. Devuelve un error 403 si el usuario no tiene permiso para eliminar el post.
+
+        $post->delete(); // metodo Eloquent delete() para eliminar el post de la base de datos. Eso es ejecutar la query de eliminación del registro en la base de datos. No confundir con el metodo delete de PostPolicy anteriormente definido.
+
+        /** Eliminar imagen */
+        $imagen_path = public_path('uploads/' . $post->imagen); // se obtiene la ruta completa de la imagen asociada al post que se va a eliminar, utilizando la función public_path() para obtener la ruta del directorio público y concatenando el nombre de la imagen almacenada en el campo 'imagen' del post.
+
+        if(File::exists($imagen_path)) { // se verifica si la imagen existe en el servidor utilizando el método exists() de la clase File, pasando como argumento la ruta completa de la imagen. Esto es útil para evitar errores al intentar eliminar una imagen que no existe.
+
+            unlink($imagen_path); // se elimina la imagen del servidor utilizando la función PHP unlink(), pasando como argumento la ruta completa de la imagen.
+        }
+
+
+        return redirect()->route('post.index', auth()->user()->username); // se redirige al usuario a su muro después de eliminar el post, pasando su nombre de usuario como parámetro para mostrar su información en la vista del dashboard
+
+    }
+
 }
