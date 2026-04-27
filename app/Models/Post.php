@@ -28,6 +28,7 @@ class Post extends Model
     {
         return $this->belongsTo(User::class)->select('name', 'username'); // se define la relación entre el modelo Post y el modelo User, indicando que un post pertenece a un usuario. Esto se hace con el método belongsTo() de Eloquent, pasando como argumento el nombre del modelo relacionado (User::class). Esto permitirá acceder al usuario de un post a través de la propiedad $post->user en cualquier parte de la aplicación.
     }
+    /************************** */
 
     public function comentarios()
     {

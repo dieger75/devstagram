@@ -9,12 +9,12 @@ use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
+    /**
+     * Protege el controlador con el middleware auth. Cualquier usuario no autenticado que intente acceder a esa ruta será redirigido al login automáticamente.
+     * Laravel tiene definida por defecto la ruta login en su sistema de autenticación. Cuando el middleware auth detecta que el usuario no está autenticado, redirige a route('login') automáticamente.
+     */
     public function __construct()
     {
-        // el middleware('auth') se encarga de verificar si el usuario está autenticado, esto es necesario para proteger las rutas que requieren autenticación, en este caso, la ruta del muro donde se muestran los posts, ya que solo los usuarios autenticados pueden verlos
-
-        // $this->middleware('auth');
-
         $this->middleware('auth')->except(['show', 'index']); // se añade el método except() para indicar que la ruta "show" y "index" no requieren autenticación, lo que permitirá a cualquier usuario ver un post específico o el muro de posts sin necesidad de estar autenticado. Esto es útil para permitir que los usuarios compartan sus posts con otros usuarios o para mostrar posts públicos sin requerir autenticación.
     }
 

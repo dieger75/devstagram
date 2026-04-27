@@ -26,4 +26,11 @@ class LikeController extends Controller
 
         return back();
     }
+
+    public function destroy(Request $request, Post $post)
+    {
+        $request->user()->likes()->where('post_id', $post->id)->delete();
+        // se utiliza la relación likes() del usuario autenticado para buscar el like correspondiente al post y eliminarlo de la base de datos. Esto se hace con el método where() para filtrar los likes por el post_id y luego llamando al método delete() para eliminar el like encontrado.
+        return back();
+    }
 }

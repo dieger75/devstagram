@@ -13,7 +13,17 @@
             <div class="p-3 flex items-center gap-4">
                 @auth
                     @if($post->checkLike( auth()->user() ))
-                        <p>Este usuario ya dio like</p>
+                        <form method="POST" action="{{ route('posts.likes.destroy', $post)}}">
+                            @csrf
+                            @method('DELETE') {{-- Se le conoce como METHOD SPOOFING. Como el navegador solo soporta métodos GET y POST, este método permite simular otros métodos como DELETE, PATCH, PUT --}}
+                            <div class="my-4">
+                                <button type="submit">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="red" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </form>
                     @else
                         <form method="POST" action="{{ route('posts.likes.store', $post)}}">
                             @csrf
@@ -27,7 +37,12 @@
                         </form>
                     @endif
                 @endauth
-                <p>0 Likes</p>
+                <p class="font-bold">{{ $post->likes->count() }}
+                    {{-- se muestra el número de likes que tiene el post utilizando la relación definida en el modelo Post, accediendo a través de $post->likes->count() para contar el número de likes asociados al post.
+                    "$post->likes" es igual a SELECT * FROM likes WHERE post_id = (id del post) y luego se cuenta el número de registros devueltos por esa consulta para mostrar el total de likes que tiene el post.
+                    --}}
+                    <span class="font-normal">Likes</span>
+                </p>
             </div>
 
             <div>
