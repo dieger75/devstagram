@@ -11,23 +11,17 @@ el nombre de la plantilla es el mismo que el del archivo sin la extension .blade
 
 @section('contenido')
 
-    @if($posts->count())
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-            @foreach ($posts as $post)
-                <div class="mb-10">
-                    <a href="{{ route('posts.show', ['post' => $post, 'user' => $post->user])}}">
-                        <img src="{{ asset('uploads') . '/' . $post->imagen }}" alt="Imagen del post {{ $post->titulo }}">
-                    </a>
-                </div>
-            @endforeach
-        </div>
+    {{-- COMPONENTES CON SLOTS --}}
+    {{-- Se puede dar un nombre al slot, en este caso titulo --}}
+    {{-- <x-listar-post>
+        <x-slot:titulo>
+            <header>Esto es un header</header>
+        </x-slot:titulo>
+        <h1>Mostrando post desde slot</h1>
+    </x-listar-post>
+    --}}
 
-        <div class="my-10">
-            {{ $posts->links() }}
-        </div>
-    @else
-        <p class="text-center">No hay Posts, sigue a alguien para poder mostrar sus posts</p>
-    @endif
+    <x-listar-post :posts="$posts" />
 
 
 @endsection
